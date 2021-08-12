@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Maven 学习笔记1 | Lee Hua</title><meta name="keywords" content="Maven"><meta name="author" content="李亦华"><meta name="copyright" content="李亦华"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Maven 仓库Maven 仓库的分类 maven 的工作需要从仓库下载一些 jar 包，如下图所示，本地的项目 A、项目 B 等都会通过 maven 软件从远程仓库（可以理解为互联网上的仓库）下载 jar 包并存在本地仓库，本地仓库 就是本地文 件夹，当第二次需要此 jar 包时则不再从远程仓库下载，因为本地仓库已经存在了，可以将本地仓库 理解为缓存，有了本地仓库就不用每次从远程仓库下载了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven 学习笔记1">
+<meta property="og:url" content="http://osyss.com/posts/14296">
+<meta property="og:site_name" content="Lee Hua">
+<meta property="og:description" content="Maven 仓库Maven 仓库的分类 maven 的工作需要从仓库下载一些 jar 包，如下图所示，本地的项目 A、项目 B 等都会通过 maven 软件从远程仓库（可以理解为互联网上的仓库）下载 jar 包并存在本地仓库，本地仓库 就是本地文 件夹，当第二次需要此 jar 包时则不再从远程仓库下载，因为本地仓库已经存在了，可以将本地仓库 理解为缓存，有了本地仓库就不用每次从远程仓库下载了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-02-22T04:01:46.000Z">
+<meta property="article:modified_time" content="2021-04-17T01:20:56.000Z">
+<meta property="article:author" content="李亦华">
+<meta property="article:tag" content="Maven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://osyss.com/posts/14296"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":450},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Maven 学习笔记1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021年04月17日 09:20:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 站内导航</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章列表</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 文章标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 文章分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-video"></i><span> 关于博主</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-home"></i><span> 给我留言</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Lee Hua</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 站内导航</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章列表</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 文章标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 文章分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-video"></i><span> 关于博主</span></a></div><div class="menus_item"><a class="site-page" href="/message/"><i class="fa-fw fas fa-home"></i><span> 给我留言</span></a></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Maven 学习笔记1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-02-22T04:01:46.000Z" title="发表于 2020年02月22日 12:01:46">2020年02月22日</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-17T01:20:56.000Z" title="更新于 2021年04月17日 09:20:56">2021年04月17日</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/Maven/">Maven</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Maven 学习笔记1"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Maven-仓库"><a href="#Maven-仓库" class="headerlink" title="Maven 仓库"></a>Maven 仓库</h2><h3 id="Maven-仓库的分类"><a href="#Maven-仓库的分类" class="headerlink" title="Maven 仓库的分类"></a>Maven 仓库的分类</h3><blockquote>
+<p>maven 的工作需要从仓库下载一些 jar 包，如下图所示，本地的项目 A、项目 B 等都会通过 maven 软件从远程仓库（可以理解为互联网上的仓库）下载 jar 包并存在本地仓库，本地仓库 就是本地文 件夹，当第二次需要此 jar 包时则不再从远程仓库下载，因为本地仓库已经存在了，可以将本地仓库 理解为缓存，有了本地仓库就不用每次从远程仓库下载了。</p>
+</blockquote>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/6io37v.png' alt='20200713194741'/>
+
+<p>上图中央仓库位置错误，应该是：<a target="_blank" rel="noopener" href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a></p>
+<ul>
+<li><p>本地仓库 ：用来存储从远程仓库或中央仓库下载的插件和 jar 包，项目使用一些插件或 jar 包， 优先从本地仓库查找。</p>
+<p>默认本地仓库位置在 ${user.dir}/.m2/repository</p>
+</li>
+<li><p>远程仓库：如果本地需要插件或者 jar 包，本地仓库没有，默认去远程仓库下载。 远程仓库可以在互联网内也可以在局域网内。</p>
+</li>
+<li><p>中央仓库 ：在 maven 软件中内置一个远程仓库地址 <a target="_blank" rel="noopener" href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a> ，它是中央仓库，服务于整个互联网，它是由 Maven 团队自己维护，里面存储了非常全的 jar 包，它包 含了世界上大部分流行的开源项目构件。</p>
+</li>
+</ul>
+<h3 id="全局-setting-与-用户-setting"><a href="#全局-setting-与-用户-setting" class="headerlink" title="全局 setting 与 用户 setting"></a>全局 setting 与 用户 setting</h3><blockquote>
+<p>maven 仓库地址、私服等配置信息需要在 setting.xml 文件中配置，分为全局配置和用户配置。</p>
+</blockquote>
+<ul>
+<li><p>在 maven 安装目录下的有 conf/setting.xml 文件，此 setting.xml 文件用于 maven 的所有 project 项目，它作为 maven 的全局配置。</p>
+</li>
+<li><p>如需要个性配置则需要在用户配置中设置，用户配置的 setting.xml 文件默认的位置在：${user. dir} /.m2/settings.xml 目录中。</p>
+</li>
+<li><p>maven 会先找用户配置，如果找到则以用户配置文件为准，否则使用全局配置文件。</p>
+</li>
+</ul>
+<h2 id="Maven-工程的认识"><a href="#Maven-工程的认识" class="headerlink" title="Maven 工程的认识"></a>Maven 工程的认识</h2><h3 id="Maven-工程的目录结构"><a href="#Maven-工程的目录结构" class="headerlink" title="Maven 工程的目录结构"></a>Maven 工程的目录结构</h3><img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/RDo21s.jpg' alt='20200713212339'/>
+
+<p>作为一个 maven 工程，它的 src 目录和 pom.xml 是必备的。 进入 src 目录后，我们发现它里面的目录结构如下：</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/pRiB8B.jpg' alt='20200713212528'/>
+
+<ul>
+<li><p><code>src/main/java</code> —— 存放项目的.java 文件 </p>
+</li>
+<li><p><code>src/main/resources</code> —— 存放项目资源文件，如 spring, hibernate 配置文件 </p>
+</li>
+<li><p><code>src/test/java</code> —— 存放所有单元测试.java 文件，如 JUnit 测试类 </p>
+</li>
+<li><p><code>src/test/resource</code>s —— 测试资源文件 </p>
+</li>
+<li><p><code>target</code> —— 项目输出位置，编译后的 class 文件会输出到此目录 </p>
+</li>
+<li><p><code>pom.xml</code>——maven 项目核心配置文件</p>
+</li>
+</ul>
+<h2 id="Maven-常用命令"><a href="#Maven-常用命令" class="headerlink" title="Maven 常用命令"></a>Maven 常用命令</h2><ol>
+<li><p>compile（编译）</p>
+<blockquote>
+<p> compile 是 maven 工程的编译命令，作用是将 src/main/java 下的文件编译为 class 文件输出到 target 目录下。</p>
+<p>执行 <code>mvn compile</code></p>
+</blockquote>
+</li>
+<li><p>test（测试）</p>
+<blockquote>
+<p>test 是 maven 工程的测试命令 mvn test，会执行 src/test/java 下的单元测试类。</p>
+<p>执行 <code>mvn test</code></p>
+</blockquote>
+</li>
+<li><p>clean（清理）</p>
+<blockquote>
+<p>clean 是 maven 工程的清理命令，执行 clean 会删除 target 目录及内容。</p>
+<p>执行 <code>mvn clean</code></p>
+</blockquote>
+</li>
+<li><p>package（打包）</p>
+<blockquote>
+<p>package 是 maven 工程的打包命令，对于 java 工程执行 package 打成 jar 包，对于 web 工程打成 war 包。</p>
+<p>执行 <code>mvn package</code></p>
+</blockquote>
+</li>
+<li><p>install（安装）</p>
+<blockquote>
+<p>install 是 maven 工程的安装命令，执行 install 将 maven 打成 jar 包或 war 包发布到本地仓库。</p>
+<p>执行 <code>mvn install</code></p>
+</blockquote>
+</li>
+</ol>
+<h2 id="idea-开发-maven-项目"><a href="#idea-开发-maven-项目" class="headerlink" title="idea 开发 maven 项目"></a>idea 开发 maven 项目</h2><h3 id="idea-的-maven-配置"><a href="#idea-的-maven-配置" class="headerlink" title="idea 的 maven 配置"></a>idea 的 maven 配置</h3><p>打开 –&gt; File –&gt; Settings 配置 maven</p>
+<p>依据图片指示，选择本地 maven 安装目录，指定 maven 安装目录下 conf 文件夹中 settings 配置文件。</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/9BpkCa.jpg' alt='20200714081221'/>
+
+
+
+<h3 id="idea-中创-建一个-maven-的-web-工程"><a href="#idea-中创-建一个-maven-的-web-工程" class="headerlink" title="idea 中创 建一个 maven 的 web 工程"></a>idea 中创 建一个 maven 的 web 工程</h3><ol>
+<li><p>打开 idea，选择创建一个新工程</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/YhGpXW.jpg' alt='20200714081638'/></li>
+<li><p>选择 idea 提供好的 maven 的 web 工程模板</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/yYdRXf.jpg' alt='20200714081710'/></li>
+<li><p>点击 Next 填写项目信息</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/tFicfl.jpg' alt='20200714081744'/></li>
+<li><p>点击 Next，此处不做改动。</p>
+</li>
+<li><p>点击 Next 选择项目所在目录</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/ObG44D.jpg' alt='20200714081900'/></li>
+<li><p>点击 Finish 后开始创建工程，耐心等待，直到出现如下界面。</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/MD3pcv.jpg' alt='20200714081955'/></li>
+</ol>
+<h3 id="idea-中配置创建的-maven-的-web-项目"><a href="#idea-中配置创建的-maven-的-web-项目" class="headerlink" title="idea 中配置创建的 maven 的 web 项目"></a>idea 中配置创建的 maven 的 web 项目</h3><ol>
+<li><p>手动添加 src/main/java 目录，如下图右键 main 文件夹 –&gt; New –&gt; Directory</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/9TLYPc.jpg' alt='20200714085207'/></li>
+<li><p>创建一个新的文件夹命名为 java</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/ZLq9Um.jpg' alt='20200714085238'/></li>
+<li><p>点击 OK 后，在新的文件夹 java 上右键 –&gt; Make Directory as –&gt; Sources Root</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/MWfWmo.jpg' alt='20200714085334'/></li>
+<li><p>创建一个 Servlet</p>
+<p>src/java/main 创建了一个 Servlet，但报错</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/Hgc8fR.jpg' alt='20200714092635'/>
+
+<p>要解决问题，就是要将 servlet-api-xxx.jar 包放进来，作为 maven 工程应当添加 servlet 的坐标，从而 导入它的 jar</p>
+</li>
+<li><p>在 pom.xml 文件添加坐标</p>
+<p>直接打开 hello_maven 工程的 pom.xml 文件，再添加坐标</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/I4nT5j.jpg' alt='20200714093033'/></li>
+</ol>
+<h2 id="pom-xml-文件中的配置"><a href="#pom-xml-文件中的配置" class="headerlink" title="pom.xml 文件中的配置"></a>pom.xml 文件中的配置</h2><p>每个 maven 工程都需要定义本工程的坐标，坐标是 maven 对 jar 包的身份定义，比如：入门程序的 坐标定义如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--项目名称，定义为组织名+项目名，类似包名--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.itheima<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 模块名称 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hello_maven<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 当前项目版本号，snapshot 为快照版本即非正式版本，release 为正式发布版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">     jar：执行 package 会打成 jar 包</span></span><br><span class="line"><span class="comment">     war：执行 package 会打成 war 包</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>打包类型<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="依赖范围"><a href="#依赖范围" class="headerlink" title="依赖范围"></a>依赖范围</h3><p>A 依赖 B，需要在 A 的 pom.xml 文件中添加 B 的坐标，添加坐标时需要指定依赖范围，依赖范围包括：</p>
+<ul>
+<li><p>compile：编译范围，指 A 在编译时依赖 B，此范围为默认依赖范围。编译范围的依赖会用在 编译、测试、运行，由于运行时需要所以编译范围的依赖会被打包 。</p>
+</li>
+<li><p>provided：provided 依赖只有在当 JDK 或者一个容器已提供该依赖之后才使用， provided 依 赖在编译和测试时需要，在运行时不需要，比如：servlet api 被 tomcat 容器提供。</p>
+</li>
+<li><p>runtime：runtime 依赖在运行和测试系统的时候需要，但在编译的时候不需要。比如：jdbc 的驱动包。由于运行时需要所以 runtime 范围的依赖会被打包。</p>
+</li>
+<li><p>test：test 范围依赖 在编译和运行时都不需要，它们只有在测试编译和测试运行阶段可用， 比如：junit。由于运行时不需要所以 test 范围依赖不会被打包。</p>
+</li>
+<li><p>system：system 范围依赖与 provided 类似，但是你必须显式的提供一个对于本地系统中 JAR 文件的路径，需要指定 systemPath 磁盘路径，system 依赖不推荐使用。</p>
+</li>
+</ul>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/xRfITB.jpg' alt='20200714094453'/>
+
+<p><strong>默认值：</strong></p>
+<blockquote>
+<p>默认引入的 jar 包 ——- compile 【默认范围 可以不写】（编译、测试、运行 都有效 ）</p>
+<p>servlet-api 、jsp-api —- — provided （编译、测试 有效， 运行时无效 防止和 tomcat 下 jar 冲突）</p>
+<p>jdbc 驱动 jar 包 —- runtime （测试、运行 有效 ）</p>
+<p>junit —– test （测试有效）</p>
+</blockquote>
+<p><strong>依赖范围由强到弱的顺序是：<code>compile &gt; provided &gt; runtime &gt; test</code></strong></p>
+<p>项目中添加 <code>&lt;scope&gt;&lt;/scope&gt;</code> ，来规定依赖范围：</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/7N9vhz.jpg' alt='20200714094801'/>
+
+
+
+<h3 id="设置-jdk-编译版本"><a href="#设置-jdk-编译版本" class="headerlink" title="设置 jdk 编译版本"></a>设置 jdk 编译版本</h3><p>这里使用 jdk1.8，需要设置编译版本为 1.8，这里需要使用 maven 的插件来设置： </p>
+<p>在 pom.xml 中加入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">encoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Web-工程"><a href="#Web-工程" class="headerlink" title="Web 工程"></a>Web 工程</h3><ol>
+<li><p>编写 servlet</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/j2u65g.jpg' alt='20200714095439'/></li>
+<li><p>编写 JSP</p>
+</li>
+<li><p>在 web.xml 中配置 servlet 访问路径</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/umbo8r.jpg' alt='20200714095711'/>
+
+<p>如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">path</span>&gt;</span>/HelloMaven<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">port</span>&gt;</span>8080<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="添加-tomcat7-插件"><a href="#添加-tomcat7-插件" class="headerlink" title="添加 tomcat7 插件"></a>添加 tomcat7 插件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">path</span>&gt;</span>/HelloMaven<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">port</span>&gt;</span>8080<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时点击 idea 最右侧 Maven Projects，就可以看到新添加的 tomcat7 插件。双击 tomcat7 插件下 <code>tomcat7:run</code> 命令直接运行项目：</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/TZgcny.jpg' alt='20200714100106'/>
+
+<p>手动输入 <code>tomc7:run</code> 命令运行项目：</p>
+<img src='https://cdn.jsdelivr.net/gh/osys/oss@master/blog/posts/Maven_Study_Notes_1/EpvYHd.png' alt='20200714100221'/>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>pom 基本配置</p>
+<p>&lt;project&gt; ：文件的根节点 .</p>
+<p>&lt;mo delversion&gt; ： pom.xml 使用的对象模型版本 </p>
+<p>&lt;groupId&gt; ：项目名称，一般写项目的域名 </p>
+<p>&lt;artifactId&gt; ：模块名称，子项目名或模块名称 </p>
+<p>&lt;version&gt; ：产品的版本号 .</p>
+<p>&lt;packaging&gt; ：打包类型，一般有 jar、war、pom 等 </p>
+<p>&lt;name&gt; ：项目的显示名，常用于 Maven 生成的文档。</p>
+<p>&lt;description&gt; ：项目描述，常用于 Maven 生成的文档 </p>
+<p>&lt;dependencies&gt; ：项目依赖构件配置，配置项目依赖构件的坐标 </p>
+<p>&lt;build&gt; ：项目构建配置，配置编译、运行插件等。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>黑马程序员（Java） —- Maven基础</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">李亦华</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://osyss.com/posts/14296">http://osyss.com/posts/14296</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://osyss.com" target="_blank">Lee Hua</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Maven/">Maven</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/1599"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ES6 学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/posts/29567"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MyBatis 学习笔记</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">李亦华</div><div class="author-info__description">世间美好与你环环相扣。</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/osys" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:lyh@javax.io" target="_blank" title="邮箱"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-%E4%BB%93%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">Maven 仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven-%E4%BB%93%E5%BA%93%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">Maven 仓库的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80-setting-%E4%B8%8E-%E7%94%A8%E6%88%B7-setting"><span class="toc-number">1.2.</span> <span class="toc-text">全局 setting 与 用户 setting</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-%E5%B7%A5%E7%A8%8B%E7%9A%84%E8%AE%A4%E8%AF%86"><span class="toc-number">2.</span> <span class="toc-text">Maven 工程的认识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven-%E5%B7%A5%E7%A8%8B%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">Maven 工程的目录结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">Maven 常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#idea-%E5%BC%80%E5%8F%91-maven-%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.</span> <span class="toc-text">idea 开发 maven 项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#idea-%E7%9A%84-maven-%E9%85%8D%E7%BD%AE"><span class="toc-number">4.1.</span> <span class="toc-text">idea 的 maven 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#idea-%E4%B8%AD%E5%88%9B-%E5%BB%BA%E4%B8%80%E4%B8%AA-maven-%E7%9A%84-web-%E5%B7%A5%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">idea 中创 建一个 maven 的 web 工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#idea-%E4%B8%AD%E9%85%8D%E7%BD%AE%E5%88%9B%E5%BB%BA%E7%9A%84-maven-%E7%9A%84-web-%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.3.</span> <span class="toc-text">idea 中配置创建的 maven 的 web 项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pom-xml-%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">pom.xml 文件中的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E8%8C%83%E5%9B%B4"><span class="toc-number">5.1.</span> <span class="toc-text">依赖范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE-jdk-%E7%BC%96%E8%AF%91%E7%89%88%E6%9C%AC"><span class="toc-number">5.2.</span> <span class="toc-text">设置 jdk 编译版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E5%B7%A5%E7%A8%8B"><span class="toc-number">5.3.</span> <span class="toc-text">Web 工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0-tomcat7-%E6%8F%92%E4%BB%B6"><span class="toc-number">5.4.</span> <span class="toc-text">添加 tomcat7 插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">7.</span> <span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
