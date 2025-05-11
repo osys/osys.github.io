@@ -11028,7 +11028,7 @@ footer.footer .level-end .field {
   color: #333;
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 5px; /* 这里减少底部间距 */
 }
 .footer-tagline {
   font-size: 16px;
@@ -11053,9 +11053,8 @@ footer.footer .level-end .field {
 }
 .footer-info {
   font-size: 12px;
-  margin-top: 10px; /* 减少上方间距 */
+  margin-top: 5px; /* 减少上方间距 */
   color: #666;
-  margin-top: 5px; /* 增加此行，减小信息部分与logo的间距 */
 }
 .footer-card {
   display: inline-block;
@@ -11078,14 +11077,9 @@ footer.footer .level-end .field {
   font-weight: bold;
   margin-right: 5px;
 }
-.footer-right {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
 .footer-statistics {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px; /* 调整统计信息的间距 */
 }
 @media (max-width: 768px) {
   .footer-logo-text {
