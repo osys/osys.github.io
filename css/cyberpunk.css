@@ -11007,11 +11007,17 @@ footer.footer .level-end .field {
   padding: 40px 0;
   font-size: 14px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 300px /* Ensure the footer has a height for centering */;
 }
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 .footer-left {
   display: flex;
@@ -11088,6 +11094,9 @@ footer.footer .level-end .field {
   align-items: center;
   margin-top: 20px;
   text-align: center;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 @media (max-width: 768px) {
   .footer-logo-text {
