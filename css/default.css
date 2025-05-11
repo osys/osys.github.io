@@ -11006,17 +11006,11 @@ footer.footer .level-end .field {
   padding: 40px 0;
   font-size: 14px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  min-height: 300px /* Ensure the footer has a height for centering */;
 }
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
 }
 .footer-left {
   display: flex;
@@ -11065,11 +11059,11 @@ footer.footer .level-end .field {
   display: inline-block;
   background-color: #f1f1f1;
   border: 1px solid #ddd;
-  padding: 4px 8px;
+  padding: 4px 8px; /* 缩小卡片 */
   margin: 5px;
   border-radius: 8px;
   text-align: center;
-  font-size: 12px;
+  font-size: 12px; /* 调整为较小字体 */
   color: #333;
   transition: all 0.3s ease;
 }
@@ -11088,14 +11082,8 @@ footer.footer .level-end .field {
   align-items: center;
 }
 .footer-statistics {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
   text-align: center;
-  width: 100%;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  margin-top: 20px;
 }
 @media (max-width: 768px) {
   .footer-logo-text {
