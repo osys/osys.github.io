@@ -11053,8 +11053,9 @@ footer.footer .level-end .field {
 }
 .footer-info {
   font-size: 12px;
-  margin-top: 10px;
+  margin-top: 10px; /* 减少上方间距 */
   color: #666;
+  margin-top: 5px; /* 增加此行，减小信息部分与logo的间距 */
 }
 .footer-card {
   display: inline-block;
