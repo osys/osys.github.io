@@ -11001,6 +11001,105 @@ footer.footer .level-end .field {
 .footer-logo img {
   max-height: 1.75rem;
 }
+.footer {
+  background-color: #fff;
+  color: #333;
+  padding: 40px 0;
+  font-size: 14px;
+  text-align: center;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.footer-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.footer-logo {
+  display: inline-block;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.footer-tagline {
+  font-size: 16px;
+  color: #777;
+  margin-left: 10px;
+  display: inline-block;
+}
+.footer-runtime {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.footer-osys {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+  margin-right: 10px;
+}
+.footer-runtime-text {
+  font-size: 14px;
+  color: #666;
+}
+.footer-info {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #666;
+}
+.footer-card {
+  display: inline-block;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  padding: 4px 8px; /* 缩小卡片 */
+  margin: 5px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px; /* 调整为较小字体 */
+  color: #333;
+  transition: all 0.3s ease;
+}
+.footer-card:hover {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+.footer-card-title {
+  font-weight: bold;
+  margin-right: 5px;
+}
+.footer-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.footer-statistics {
+  text-align: center;
+  margin-top: 20px;
+}
+@media (max-width: 768px) {
+  .footer-logo-text {
+    font-size: 20px;
+  }
+  .footer-tagline {
+    font-size: 14px;
+  }
+  .footer-info {
+    font-size: 10px;
+  }
+  .footer-links {
+    margin-top: 15px;
+  }
+}
 .pagination {
   margin-top: 1.5rem;
 }
