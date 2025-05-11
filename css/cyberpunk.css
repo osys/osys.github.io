@@ -11060,11 +11060,11 @@ footer.footer .level-end .field {
   display: inline-block;
   background-color: #f1f1f1;
   border: 1px solid #ddd;
-  padding: 4px 8px; /* 缩小卡片 */
+  padding: 4px 8px;
   margin: 5px;
   border-radius: 8px;
   text-align: center;
-  font-size: 12px; /* 调整为较小字体 */
+  font-size: 12px;
   color: #333;
   transition: all 0.3s ease;
 }
@@ -11083,8 +11083,11 @@ footer.footer .level-end .field {
   align-items: center;
 }
 .footer-statistics {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
+  text-align: center;
 }
 @media (max-width: 768px) {
   .footer-logo-text {
